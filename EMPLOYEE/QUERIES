@@ -1,0 +1,88 @@
+create database EMPLOYE_171;
+use EMPLOYE_171;
+
+create table dept_171(
+deptno int,
+dname varchar(20),
+dloc varchar(20),
+primary key(deptno)
+);
+create table employee_171(
+empno int,
+ename varchar(20),
+mgrno int,
+hiredate varchar(20),
+sal int,
+deptno int,
+primary key(empno,deptno),
+foreign key(deptno) references dept_171(deptno)
+);
+
+create table incentives_171(
+empno int,
+date varchar(20),
+amount int,
+primary key(empno,date),
+foreign key(empno) references employee_171(empno)
+);
+
+create table project_171(
+pno int,
+ploc varchar(20),
+pname varchar(20),
+primary key(pno)
+);
+
+create table assignedto_171(
+empno int,
+pno int,
+jobrole varchar(20),
+primary key(empno,pno),
+foreign key(empno) references employee_171(empno),
+foreign key(pno) references project_171(pno)
+);
+
+insert into dept_171 values(1,"HR","new_delhi");
+insert into dept_171 values(2,"IT","bangalore");
+insert into dept_171 values(3,"Finance","mysuru");
+insert into dept_171 values(4,"Developer","hyderabad");
+insert into dept_171 values(5,"Marketing","new_delhi");
+
+insert into employee_171 values(101,"raj",100,"12/01/1999",100000,1);
+insert into employee_171 values(201,"adhi",200,"17/01/2020",50000,2);
+insert into employee_171 values(301,"priyam",100,"01/09/2004",30000,3);
+insert into employee_171 values(401,"asha",101,"03/08/2000",10000,4);
+insert into employee_171 values(501,"likith",101,"29/2/2008",90000,5);
+
+insert into incentives_171 values(101,"12/03/2004",50000);
+insert into incentives_171 values(201,"17/03/2024",25000);
+insert into incentives_171 values(301,"01/12/2019",15000);
+insert into incentives_171 values(401,"03/11/2019",5000);
+insert into incentives_171 values(501,"29/4/2019",45000);
+
+insert into project_171 values(10,"new_delhi","chatbot");
+insert into project_171 values(40,"bangalore","ml model");
+insert into project_171 values(50,"mysuru","blockchain");
+insert into project_171 values(30,"hyderabad","stocks");
+insert into project_171 values(80,"new_delhi","android app");
+
+insert into assignedto_171 values(101,10,"devops");
+insert into assignedto_171 values(201,40,"sde");
+insert into assignedto_171 values(301,50,"manager");
+insert into assignedto_171 values(401,30,"jpa");
+insert into assignedto_171 values(501,80,"pa");
+
+select a.empno 
+from assignedto_171 a,project_171 p 
+where a.pno=p.pno and(ploc="bangalore" or ploc="hyderabad" or ploc="mysuru");
+
+insert into employee_171 values(601,"likhith",102,"28/3/2007",90000,1);
+
+select e.empno
+from employee_171 e
+where e.empno!=all(select i.empno
+					from incentives_171 i);
+
+select e.empno,e.ename,d.dname,a.jobrole,d.dloc,p.ploc
+from employee_171 e,dept_171 d,assignedto_171 a,project_171 p
+where e.deptno=d.deptno and e.empno=a.empno and a.pno=p.pno and d.dloc=p.ploc;
