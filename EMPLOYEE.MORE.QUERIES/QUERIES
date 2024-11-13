@@ -1,0 +1,42 @@
+use EMPLOYE_171;
+
+select e.ename 
+from employee_171 e
+where e.sal>(select avg(sub.sal)
+				from employee_171 sub 
+                where sub.mgrno=e.empno);
+                
+select ename 
+from employee_171
+where sal=(select max(sal) from employee_171
+			where sal<(select max(sal) from employee_171));
+            
+select * 
+from employee_171
+where empno=(select empno from incentives_171
+			where amount=(select max(amount)
+							from incentives_171
+                            where amount<(select max(amount)
+											from incentives_171))); 
+                                            
+                                            
+select e.ename
+from employee_171 e,employee_171 m
+where e.mgrno=m.empno and e.deptno=m.deptno;
+
+
+select e.ename
+from employee_171 e
+where e.empno in (
+    select m.mgrno
+    from employee_171 m
+    group by m.mgrno
+    having count(*) = (
+        select max(emp_count)
+        from (
+            select count(*) as emp_count
+            from employee_171 em
+            group by em.mgrno
+        ) as emp_count_subquery
+    )
+);
