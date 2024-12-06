@@ -58,7 +58,7 @@ insert into accident_171 values(12,'2004-02-02','south end');
 insert into accident_171 values(13,'2003-01-21','Bull temple road');
 insert into accident_171 values(14,'2008-02-17','Mysore road');
 insert into accident_171 values(15,'2004-03-15','kanakapura road');
-select * from accident_171;
+
 
 insert into person_171 values('A01','Richard','Srinivas nagar');
 insert into person_171 values('A02','pradeep','Rajaji nagar');
